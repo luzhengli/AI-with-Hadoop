@@ -26,3 +26,27 @@ Documents  Music      Pictures  Templates  Videos
 
 
 
+# 系统监测
+
+## 检测设备状态
+
+命令：`tail -f /var/log/message`
+
+解释： **`/var/log/message` 文件是一个系统日志**，设备的挂载和卸载都会记载在这个文件中。上述命令截取了该日志文件的最后几行内容，一旦设备状态发生改变，这个日志内容就会更新，我们就能捕捉到设备状态的变化。
+
+实例：虚拟机下 CentOS7 监视 USB 设备（这里我在宿主机上插入了一个 USB-type C 口的扩展坞，`/var/log/message`  文件产生了如下新的内容）
+
+```
+Feb  7 19:59:17 localhost dbus[1175]: [system] Activating via systemd: service name='net.reactivated.Fprint' unit='fprintd.service'
+Feb  7 19:59:17 localhost systemd: Starting Fingerprint Authentication Daemon...
+Feb  7 19:59:17 localhost dbus[1175]: [system] Successfully activated service 'net.reactivated.Fprint'
+Feb  7 19:59:17 localhost systemd: Started Fingerprint Authentication Daemon.
+Feb  7 20:00:01 localhost systemd: Created slice User Slice of root.
+Feb  7 20:00:01 localhost systemd: Started Session 19 of user root.
+Feb  7 20:00:01 localhost systemd: Removed slice User Slice of root.
+```
+
+观察前 5 行内容可以发现，Linux 激活了一个名为 `net.reactivated.Fprint` 的设备。
+
+
+
